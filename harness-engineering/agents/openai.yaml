@@ -1,0 +1,33 @@
+interface:
+  display_name: "Harness Engineering"
+  short_description: "Repo shaping, routing docs, and long-run agent orchestration."
+  default_prompt: "Use $harness-engineering for repo shaping, routing-doc work, or durable multi-agent handoffs."
+
+policy:
+  allow_implicit_invocation: true
+
+agents:
+  codex:
+    path: "../../codex/agents/"
+    format: "toml"
+    agents:
+      - harness-planner
+      - harness-dispatch-gate
+      - harness-generator
+      - harness-evaluator
+      - harness-doc-gardener
+
+  claude_code:
+    path: "./"
+    format: "markdown"
+    agents:
+      - harness-planner
+      - harness-dispatch-gate
+      - harness-generator
+      - harness-evaluator
+      - harness-doc-gardener
+
+note: |
+  Codex uses .toml files with developer_instructions strings.
+  Claude Code uses .md files with YAML frontmatter and Markdown body.
+  See agents/README.md for usage details.
