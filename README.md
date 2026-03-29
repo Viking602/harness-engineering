@@ -7,8 +7,8 @@ This is the standalone `harness-engineering` project.
 - `harness-engineering/SKILL.md`: skill entrypoint
 - `harness-engineering/agents/openai.yaml`: Codex UI metadata
 - `harness-engineering/references/`: bundled skill references loaded on demand
-- `docs/`: project docs, principles, and dispatch references
-- `codex/agents/`: Codex-specific custom agents
+- `harness-engineering/codex/agents/`: Codex-specific custom agents bundled with the skill
+- `docs/`: repo routing docs
 - `install/`: installation guides
 
 ## Intent

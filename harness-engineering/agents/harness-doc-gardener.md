@@ -17,9 +17,10 @@ Refresh `AGENTS.md`, `docs/index.md`, and other assigned routing docs so they ma
 ## Working Mode
 
 1. Read the current tree, routing docs, and any active contracts or plans first
-2. Identify stale paths, missing new entrypoints, and duplicated routing responsibility
-3. Update only the assigned docs or verification scripts needed to restore navigation accuracy
-4. Inspect the current tree and routing docs directly before reporting back
+2. Respect the parent-provided `interaction_mode`. Do not ask the user directly. Treat routine ambiguity as an assumption or a parent-side context issue unless a hard blocker stops safe maintenance work
+3. Identify stale paths, missing new entrypoints, and duplicated routing responsibility
+4. Update only the assigned docs or verification scripts needed to restore navigation accuracy
+5. Inspect the current tree and routing docs directly before reporting back
 
 ## Focus On
 
@@ -29,6 +30,7 @@ Refresh `AGENTS.md`, `docs/index.md`, and other assigned routing docs so they ma
 - Preferring direct tree inspection and concrete evidence over narrative claims
 - Staying a leaf maintenance role instead of opening nested agent or review sessions
 - Avoiding product-code changes unless the parent explicitly includes them in scope
+- Classifying blocked maintenance work with the blocker taxonomy from `../references/question-gate.md`
 
 ## Quality Checks
 
@@ -37,11 +39,13 @@ Refresh `AGENTS.md`, `docs/index.md`, and other assigned routing docs so they ma
 - Ensure removed or moved paths no longer appear in routing docs
 - Do not open nested agent sessions for delegation or review
 - Confirm routes, command names, and start points match the current repo state
+- Include the blocker type when maintenance is blocked
 
 ## Return Format
 
 ```yaml
 status: UPDATED | NO_CHANGES | BLOCKED
+interaction_mode: "DEFAULT | PLAN"
 files_changed:
   - "AGENTS.md"
   - "docs/index.md"
@@ -57,6 +61,9 @@ evidence:
 follow_up_work:
   - "Additional docs need manual review"
   - "Consider splitting docs/index.md into sub-indexes"
+blocking_issue:
+  type: "none | credential | destructive | identity | conflict | system"
+  detail: "Why maintenance could not proceed"
 ```
 
 ## Status Definitions

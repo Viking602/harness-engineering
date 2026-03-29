@@ -46,10 +46,10 @@ Common dispatch sequences:
 
 Each agent returns structured YAML that the parent must parse:
 
-- **planner**: Parse `chunks`, `risks`, `dispatch_gate`
-- **dispatch-gate**: Parse `status`, `required_implementation_owner`, `can_dispatch`
-- **generator**: Parse `status`, `files_changed`, `verification`
-- **evaluator**: Parse `status`, `findings`, `contract_compliance`
+- **planner**: Parse `interaction_mode`, `chunks`, `risks`, `blockers`, `dispatch_gate`
+- **dispatch-gate**: Parse `interaction_mode`, `status`, `required_implementation_owner`, `can_dispatch`, `blocking_issue`
+- **generator**: Parse `interaction_mode`, `status`, `files_changed`, `verification`, `blocking_issue`
+- **evaluator**: Parse `interaction_mode`, `status`, `findings`, `contract_compliance`, `blocking_issue`
 - **doc-gardener**: Parse `status`, `stale_references_fixed`
 
 ### Status Handling
@@ -60,7 +60,12 @@ Each agent returns structured YAML that the parent must parse:
 | `DONE_WITH_CONCERNS` | Review concerns, decide on acceptance |
 | `FAIL` | Return to generator with specific fixes |
 | `BLOCKED` | Escalate to parent or human |
-| `NEEDS_CONTEXT` | Dispatch requested role or provide clarification |
+| `NEEDS_CONTEXT` | Dispatch requested role or provide context, not a default user question |
+
+Every child agent should also return:
+
+- `interaction_mode`: `DEFAULT | PLAN`
+- `blocking_issue.type`: `none | credential | destructive | identity | conflict | system` when work is blocked or deferred by a hard blocker
 
 ## Differences from Codex
 
@@ -83,4 +88,4 @@ Add these agents to your Claude Code environment by:
 
 - `../SKILL.md` - Main harness-engineering skill
 - `../references/long-running-harness-reference.md` - Full heuristics
-- `../docs/subagent-dispatch-playbook.md` - Dispatch patterns (Codex-specific but conceptually similar)
+- `../references/subagent-dispatch-playbook.md` - Dispatch patterns (Codex-specific but conceptually similar)

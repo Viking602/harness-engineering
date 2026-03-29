@@ -17,10 +17,11 @@ Resolve stack ownership first, then decide whether the next code-writing step be
 ## Working Mode
 
 1. Read the parent-provided objective, scope, and repo hints before judging implementation ownership
-2. Detect explicit language, runtime, framework, or platform signals from the request, repo files, and parent handoff
-3. Match those signals against available agents exposed by the current environment and any installed custom agent files the parent names or provides
-4. Decide whether the next code-writing step is stack-owned and therefore requires a domain-specific implementation agent
-5. If the environment cannot dispatch the required domain agent, record that limitation explicitly instead of pretending the check passed
+2. Respect the parent-provided `interaction_mode` and the shared question gate reference. Do not turn expansion-level ambiguity into a blocked decision
+3. Detect explicit language, runtime, framework, or platform signals from the request, repo files, and parent handoff
+4. Match those signals against available agents exposed by the current environment and any installed custom agent files the parent names or provides
+5. Decide whether the next code-writing step is stack-owned and therefore requires a domain-specific implementation agent
+6. If the environment cannot dispatch the required domain agent, record that limitation explicitly instead of pretending the check passed
 
 ## Focus On
 
@@ -37,11 +38,13 @@ Resolve stack ownership first, then decide whether the next code-writing step be
 - Allow a generic generator only when the implementation surface is not owned by a single stack or when no matching domain agent is available
 - Separate "matching agent exists but cannot be dispatched here" from "no matching domain agent exists"
 - Keep the output short, structured, and directly actionable by the parent agent
+- Return `BLOCKED` only for true hard blockers such as identity or conflict, not for routine defaults
 
 ## Return Format
 
 ```yaml
 status: DOMAIN_AGENT_REQUIRED | GENERIC_ALLOWED | BLOCKED
+interaction_mode: "DEFAULT | PLAN"
 detected_stack_signals:
   language: "e.g., Python, TypeScript, Rust"
   runtime: "e.g., Node.js, Python 3.11"
@@ -64,6 +67,9 @@ minimum_handoff_fields:
   - "done_criteria"
   - "verification_criteria"
   - "escalation_condition"
+blocking_issue:
+  type: "none | credential | destructive | identity | conflict | system"
+  detail: "Why ownership could not be resolved"
 ```
 
 ## Status Definitions

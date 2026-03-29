@@ -17,9 +17,10 @@ Turn underspecified requests into buildable plans that survive handoff to implem
 ## Working Mode
 
 1. Read the parent-provided artifacts first and extract hard constraints
-2. Clarify scope, non-goals, and acceptance shape from the request and repo signals first. Ask the user only for identity-level blockers
-3. Split the task into bounded chunks with explicit handoff value
-4. Flag unknowns, risks, and decisions that still need parent-agent judgment
+2. Respect the parent-provided `interaction_mode`. In `DEFAULT`, do not ask the user; record assumptions and continue unless a hard blocker stops safe progress. In `PLAN`, ask the user only for identity-level hard blockers
+3. Clarify scope, non-goals, and acceptance shape from the request and repo signals first
+4. Split the task into bounded chunks with explicit handoff value
+5. Flag unknowns, risks, and decisions that still need parent-agent judgment
 
 ## Focus On
 
@@ -34,6 +35,7 @@ Turn underspecified requests into buildable plans that survive handoff to implem
 - Recommending next roles without trying to dispatch them from inside the planning pass
 - Identifying which routing docs and project indexes must change when the task moves paths, commands, or current-doc entrypoints
 - Treating a root `AGENTS.md` as mandatory and deciding what the deeper docs map in `docs/index.md` should contain
+- Classifying any true blocker with the shared blocker taxonomy from `../references/question-gate.md`
 
 ## Quality Checks
 
@@ -49,11 +51,14 @@ Turn underspecified requests into buildable plans that survive handoff to implem
 - Treat widening scope as a recorded assumption unless it changes the identity of the first runnable artifact
 - Do not ask yes-or-no follow-up questions for optional subsystem defaults during the first scaffold pass
 - Do not restate the chosen minimal baseline as a question asking for approval or scope confirmation
+- In `DEFAULT`, treat non-blocking ambiguity as an assumption to record, not a reason to ask
+- If a blocker remains, name its blocker type instead of leaving the escalation reason vague
 
 ## Return Format
 
 ```yaml
 objective: "Clear statement of what this plan achieves"
+interaction_mode: "DEFAULT | PLAN"
 scope: "Explicit boundaries"
 assumptions:
   - "List of assumptions made"
@@ -82,7 +87,8 @@ routing_doc_updates:
 docs_index_structure:
   - "Proposed sections for docs/index.md"
 blockers:
-  - "Identity-level issues preventing execution start (if any)"
+  - type: "none | credential | destructive | identity | conflict | system"
+    detail: "Identity-level issues preventing execution start or planning handoff"
 ```
 
 ## Rules

@@ -20,7 +20,7 @@ description: |
 # Harness Engineering
 
 Use this skill when repository shape and agent continuity matter more than raw code generation.
-Keep this file as the skill entrypoint. Keep detailed method docs under `../docs/` and Codex-only agent files under `../codex/agents/`.
+Keep this file as the skill entrypoint. Keep bundled skill references under `./references/` and Codex-only agent files under `./codex/agents/`.
 
 For multi-hour, multi-session, or failure-prone work, read `./references/long-running-harness-reference.md` before planning roles, handoffs, or reset strategy.
 
@@ -57,6 +57,14 @@ Do not trigger this skill for:
 - Prefer progressive disclosure: `AGENTS.md`, then `docs/index.md`, then child indexes only where needed.
 - A stale path in `AGENTS.md` or `docs/index.md` is a defect.
 - If structure, commands, entrypoints, or current work paths change, update the routing docs in the same pass.
+
+## Interaction Modes
+
+- Follow `./references/question-gate.md` as the shared user-question policy.
+- `DEFAULT` is the normal mode. Do not ask the user about routine defaults, optional scope expansion, or whether to keep going. Record assumptions and proceed.
+- `PLAN` is for explicit planning passes. Only hard blockers that change the identity of the first runnable artifact or implementation owner may become user questions.
+- Child agents never ask the user directly. They return `NEEDS_CONTEXT` or `BLOCKED` to the parent agent with a blocker classification.
+- The parent agent owns every user-facing question and should treat `NEEDS_CONTEXT` as a dispatch or context problem before considering a user question.
 
 ## Repo As Record
 
@@ -157,7 +165,7 @@ See `./references/long-running-harness-reference.md` for the full simplification
 ### Codex Agents
 
 - `planner`: prefer `harness-planner`, then `research-analyst`, then `product-manager`.
-- `dispatch gate`: prefer `harness-dispatch-gate`, then the parent agent using `../docs/subagent-dispatch-playbook.md`.
+- `dispatch gate`: prefer `harness-dispatch-gate`, then the parent agent using `./references/subagent-dispatch-playbook.md`.
 - `generator`: use the gate result. Prefer the matching language-specific implementation agent when required. Use `harness-generator` only when the gate explicitly allows a generic generator. Fall back to `worker` last.
 - `evaluator`: prefer `harness-evaluator`, then `reviewer`, `qa-expert`, or `browser-debugger`.
 - `doc-gardener`: use `harness-doc-gardener` after structure-heavy changes.
@@ -177,7 +185,7 @@ See `./agents/README.md` for detailed usage instructions and platform difference
 - Do not silently stay single-agent after detecting an explicit language match.
 - Record the gate result, chosen implementation agent, or dispatch limitation in the handoff.
 - If another role is needed mid-task, the child agent must return `NEEDS_CONTEXT` or `BLOCKED` and ask the parent agent to dispatch it directly.
-- Keep language and framework mappings in `../docs/subagent-dispatch-playbook.md`.
+- Keep language and framework mappings in `./references/subagent-dispatch-playbook.md`.
 
 ## Handoffs
 
@@ -209,12 +217,13 @@ After structure-heavy changes or merges, refresh routing docs against the curren
 
 ## References
 
-- `../docs/harness-principles.md`
-- `../docs/runtime-orchestration-principles.md`
+- `./references/harness-principles.md`
+- `./references/runtime-orchestration-principles.md`
 - `./references/long-running-harness-reference.md` for article-backed long-running heuristics, role selection, contract shape, and reset or simplification decisions
-- `../docs/subagent-dispatch-playbook.md` (Codex-specific dispatch patterns)
-- `../docs/doc-index-maintenance.md`
-- `../docs/openai-docs-index-pattern.md`
-- `../docs/codex-to-claude-migration.md` for platform differences and agent migration guide
+- `./references/subagent-dispatch-playbook.md` (Codex-specific dispatch patterns)
+- `./references/doc-index-maintenance.md`
+- `./references/openai-docs-index-pattern.md`
+- `./references/question-gate.md` for shared `DEFAULT` vs `PLAN` interaction rules and blocker taxonomy
+- `./references/codex-to-claude-migration.md` for platform differences and agent migration guide
 - `./agents/` for Claude Code-compatible agent definitions
-- `../codex/agents/*.toml` for Codex-specific role behavior
+- `./codex/agents/*.toml` for Codex-specific role behavior

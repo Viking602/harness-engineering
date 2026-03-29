@@ -188,7 +188,7 @@ harness-engineering/
 Copy `.toml` files to `~/.codex/agents/`:
 
 ```bash
-cp codex/agents/*.toml ~/.codex/agents/
+cp harness-engineering/codex/agents/*.toml ~/.codex/agents/
 ```
 
 ### Claude Code

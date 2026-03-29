@@ -5,7 +5,7 @@ Use the skill entrypoint from:
 - `harness-engineering/SKILL.md`
 - `harness-engineering/agents/openai.yaml`
 
-The source tree keeps the skill in `harness-engineering/`, but Claude Code expects the installed entrypoint at `~/.claude/skills/harness-engineering/SKILL.md`. Rewrite the relative `docs/` and `agents/` paths during installation so the installed copy still resolves correctly.
+The source tree keeps the skill self-contained under `harness-engineering/`, so install the bundled `references/` and `agents/` directories together.
 
 Install the Claude Code-specific agents from:
 
@@ -28,14 +28,14 @@ Example:
 ```bash
 mkdir -p ~/.claude/skills/harness-engineering
 
-# Install skill entrypoint (rewrite relative paths)
-sed -e 's#`../docs/#`docs/#g' -e 's#`./agents/#`agents/#g' harness-engineering/SKILL.md > ~/.claude/skills/harness-engineering/SKILL.md
+# Install skill entrypoint
+install -D harness-engineering/SKILL.md ~/.claude/skills/harness-engineering/SKILL.md
 
 # Install agent registry
 install -D harness-engineering/agents/openai.yaml ~/.claude/skills/harness-engineering/agents/openai.yaml
 
 # Install reference docs
-install -D harness-engineering/references/long-running-harness-reference.md ~/.claude/skills/harness-engineering/references/long-running-harness-reference.md
+cp -r harness-engineering/references ~/.claude/skills/harness-engineering/
 
 # Install all agents to skill directory
 cp harness-engineering/agents/*.md ~/.claude/skills/harness-engineering/agents/

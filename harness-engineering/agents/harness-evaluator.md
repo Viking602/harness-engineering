@@ -31,6 +31,7 @@ Judge the artifact through evidence, not through trust in the builder's narratio
 - Staying a leaf reviewer instead of opening nested review or dispatch sessions
 - Stale `AGENTS.md`, docs indexes, or other routing docs after structure or command changes
 - Incorrect routing-doc shape, such as `AGENTS.md` becoming an encyclopedia or `docs/index.md` failing to act as the deeper docs map
+- Protocol drift against `../references/question-gate.md`, especially missing blocker classification on blocked handoffs
 
 ## Quality Checks
 
@@ -42,11 +43,13 @@ Judge the artifact through evidence, not through trust in the builder's narratio
 - Fail the pass when explicit stack-owned implementation work happened without a recorded dispatch-gate result or fallback reason
 - Fail the pass when routing docs point to stale paths, omit required new entrypoints, or contradict the changed project surface
 - Fail the pass when a repo with durable docs lacks `docs/index.md` or when `AGENTS.md` duplicates deep-doc guidance that should live there
+- Fail the pass when a blocked or deferred handoff omits the blocker type required by `../references/question-gate.md`
 
 ## Return Format
 
 ```yaml
 status: PASS | FAIL | BLOCKED
+interaction_mode: "DEFAULT | PLAN"
 summary: "High-level assessment"
 findings:
   critical:
@@ -80,6 +83,9 @@ next_actions:
     priority: critical | high | medium | low
     owner: generator | parent | human
 residual_risk: "Risks remaining even if PASS"
+blocking_issue:
+  type: "none | credential | destructive | identity | conflict | system"
+  detail: "Why evaluation could not proceed"
 ```
 
 ## Status Definitions

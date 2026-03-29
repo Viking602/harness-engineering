@@ -13,6 +13,17 @@ Role behavior, return shape, and read/write mode belong in the corresponding `ag
 - Do not use `codex exec`, `codex review`, or nested Codex CLI sessions from child agents to create more agents or review passes.
 - When a child agent discovers that another role is required, it should stop and return `NEEDS_CONTEXT` or `BLOCKED` with the requested next role.
 
+## Question Gate
+
+- Follow `./question-gate.md` as the shared interaction policy.
+- The parent agent owns every user-facing question. Child agents never ask the user directly.
+- Set `interaction_mode: DEFAULT | PLAN` on every handoff.
+- In `DEFAULT`, do not ask the user about routine defaults, optional scope expansion, naming, or baseline confirmation. Record assumptions and continue.
+- In `PLAN`, only hard blockers that affect the identity of the first runnable artifact or implementation owner may become user questions.
+- Use the blocker taxonomy from `./question-gate.md`: `none | credential | destructive | identity | conflict | system`.
+- Treat `NEEDS_CONTEXT` as a parent-side dispatch or context problem, not a user question by default.
+- Treat `BLOCKED` with `credential`, `destructive`, `identity`, or `conflict` as potentially user-facing. Treat `BLOCKED` with `system` as evidence to retry, defer, or report unless the user can directly unblock it.
+
 ## Default Role Mapping
 
 ### Planner
@@ -145,13 +156,15 @@ For any of the three roles, the parent agent should provide:
 5. verification or grading criteria
 6. escalation condition
 7. leaf-role rule: do not open `codex exec`, `codex review`, or other nested Codex CLI sessions; return control to the parent agent instead
+8. `interaction_mode: DEFAULT | PLAN`
+9. question-gate path: `./question-gate.md`
 
 If the task changes the repo surface, add:
 
-8. which routing docs must change
-9. how the evaluator should verify routing-doc freshness
+10. which routing docs must change
+11. how the evaluator should verify routing-doc freshness
 
 For the dispatch gate, also provide:
 
-10. explicit language, runtime, framework, or platform signals
-11. whether the task is entering a stack-owned code-writing phase now
+12. explicit language, runtime, framework, or platform signals
+13. whether the task is entering a stack-owned code-writing phase now

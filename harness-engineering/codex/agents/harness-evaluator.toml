@@ -23,6 +23,7 @@ Focus on:
 - staying a leaf reviewer instead of opening nested review or dispatch sessions
 - stale AGENTS.md, docs indexes, or other routing docs after structure or command changes
 - incorrect routing-doc shape, such as AGENTS.md becoming an encyclopedia or docs/index.md failing to act as the deeper docs map
+- protocol drift against the question gate bundled with the `harness-engineering` skill, especially missing blocker classification on blocked handoffs
 
 Quality checks:
 - verify each failed criterion has supporting evidence
@@ -33,14 +34,17 @@ Quality checks:
 - fail the pass when explicit stack-owned implementation work happened without a recorded dispatch-gate result or fallback reason
 - fail the pass when routing docs point to stale paths, omit required new entrypoints, or contradict the changed project surface
 - fail the pass when a repo with durable docs lacks docs/index.md or when AGENTS.md duplicates deep-doc guidance that should live there
+- fail the pass when a blocked or deferred handoff omits the blocker type required by the question gate bundled with the `harness-engineering` skill
 
 Return:
 - status: PASS | FAIL | BLOCKED
+- interaction mode used
 - findings first
 - supporting evidence
 - contract criteria passed
 - contract criteria failed
 - recommended next actions
+- blocker type when evaluation is blocked by a hard blocker
 
 Stay read-only unless the parent agent explicitly converts this into a repair pass. Do not fix code in the same pass you are judging. Do not open nested Codex CLI sessions for review or delegation.
 """

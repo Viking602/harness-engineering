@@ -11,7 +11,7 @@
 
 Long-running agent work fails for predictable reasons: context degrades over time, builders under-scope or lose coherence, and models grade their own work too generously. A runtime harness should therefore separate planning, implementation, and evaluation, then force the work through explicit contracts and external verification.
 
-For a compact synthesis that combines this article with OpenAI's repo-shaping lessons, read `../harness-engineering/references/long-running-harness-reference.md`.
+For a compact synthesis that combines this article with OpenAI's repo-shaping lessons, read `./long-running-harness-reference.md`.
 
 ## When To Add Runtime Roles
 

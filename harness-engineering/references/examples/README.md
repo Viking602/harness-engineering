@@ -49,4 +49,4 @@ Use this when evaluating agent outputs to ensure consistent, evidence-based judg
 
 - `../long-running-harness-reference.md` - Full article-backed heuristics
 - `../../SKILL.md` - Main skill entrypoint with simplification guidance
-- `../../../docs/runtime-orchestration-principles.md` - Runtime orchestration principles
+- `../runtime-orchestration-principles.md` - Runtime orchestration principles
